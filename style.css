@@ -506,3 +506,121 @@ body {
 }
 #backToTop.show { opacity: 1; transform: translateY(0); }
 #backToTop:hover { box-shadow: 0 8px 30px rgba(0,200,133,0.6); }
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #00c885, #00ffaa);
+  box-shadow: 0 0 12px rgba(0,200,133,0.7), 0 0 4px rgba(0,200,133,0.5);
+  z-index: 9999;
+  transition: width 0.08s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+.hero-hidden { opacity: 0; }
+
+.hero-greeting.hero-hidden,
+.hero-name.hero-hidden,
+.hero-subtitle.hero-hidden,
+.btn-contact-me.hero-hidden { transform: translateY(28px); transition: none; }
+
+.hero-greeting.hero-enter,
+.hero-name.hero-enter,
+.hero-subtitle.hero-enter,
+.btn-contact-me.hero-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+
+#home .d-flex.flex-wrap > div.hero-hidden { transform: translateY(16px); transition: none; }
+#home .d-flex.flex-wrap > div.hero-enter {
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.hero-photo.hero-hidden { transform: translateX(40px); transition: none; }
+.hero-photo.hero-enter {
+  opacity: 1; transform: translateX(0);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+
+.hero-photo { will-change: transform; }
+
+.about-detail-hidden { opacity: 0; transform: translateX(-12px); transition: none; }
+.about-detail-show {
+  opacity: 1; transform: translateX(0);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+#about .col-lg-5 img { position: relative; overflow: hidden; }
+#about .col-lg-5 img.shimmer-once::after {
+  content: '';
+  position: absolute; top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  animation: shimmerSweep 0.9s ease forwards;
+}
+@keyframes shimmerSweep {
+  0%   { left: -75%; opacity: 1; }
+  100% { left: 125%; opacity: 0; }
+}
+
+.skill-card,
+.project-card,
+.cert-card { will-change: transform; }
+
+.card-stagger-in { animation: cardFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.icon-pulse-once { animation: iconPulse 0.5s ease forwards; }
+@keyframes iconPulse {
+  0%   { filter: drop-shadow(0 0 12px rgba(0,200,133,0.55)); transform: scale(1); }
+  50%  { filter: drop-shadow(0 0 26px rgba(0,200,133,1)); transform: scale(1.22); }
+  100% { filter: drop-shadow(0 0 12px rgba(0,200,133,0.55)); transform: scale(1); }
+}
+
+.project-thumbnail img {
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+.project-card:hover .project-thumbnail img { transform: scale(1.08); }
+
+.tag { opacity: 0; transform: scale(0.75); transition: none; }
+.tag.tag-pop {
+  opacity: 1; transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.badge-flip { animation: badgeFlipIn 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes badgeFlipIn {
+  from { transform: rotateY(-180deg) scale(0.6); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+.contact-input { position: relative; }
+.input-ripple { animation: inputRipple 0.55s ease forwards; }
+@keyframes inputRipple {
+  0%   { box-shadow: 0 0 0 0 rgba(0,200,133,0.4), 0 0 0 3px rgba(0,200,133,0.15) !important; }
+  60%  { box-shadow: 0 0 0 8px rgba(0,200,133,0), 0 0 0 3px rgba(0,200,133,0.15) !important; }
+  100% { box-shadow: 0 0 0 3px rgba(0,200,133,0.15) !important; }
+}
+
+.btn-contact-me,
+.btn-download-cv,
+.btn-send { display: inline-block; position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-greeting.hero-hidden, .hero-name.hero-hidden, .hero-subtitle.hero-hidden,
+  .btn-contact-me.hero-hidden, .hero-photo.hero-hidden,
+  #home .d-flex.flex-wrap > div.hero-hidden { opacity: 0 !important; transform: none !important; }
+  .hero-greeting.hero-enter, .hero-name.hero-enter, .hero-subtitle.hero-enter,
+  .btn-contact-me.hero-enter, .hero-photo.hero-enter,
+  #home .d-flex.flex-wrap > div.hero-enter { opacity: 1 !important; transform: none !important; transition: opacity 0.3s ease !important; }
+  .hero-orb { animation: none !important; }
+  .card-stagger-in, .icon-pulse-once, .badge-flip { animation: none !important; }
+  .tag.tag-pop { opacity: 1; transform: scale(1); transition: none !important; }
+}
