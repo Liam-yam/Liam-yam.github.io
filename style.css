@@ -26,13 +26,21 @@ body {
   border-bottom: 1px solid rgba(255,255,255,0.05);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: background 0.3s;
+  padding: 16px 0;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, padding 0.3s;
+}
+.navbar.scrolled {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,200,133,0.18);
+  box-shadow: 0 4px 32px rgba(0,200,133,0.06);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 .nav-link {
   color: #888888 !important;
   font-size: 15px;
   position: relative;
-  padding-bottom: 4px !important;
+  padding: 6px 4px 8px !important;
 }
 .nav-link::after {
   content: '';
@@ -623,4 +631,70 @@ body {
   .hero-orb { animation: none !important; }
   .card-stagger-in, .icon-pulse-once, .badge-flip { animation: none !important; }
   .tag.tag-pop { opacity: 1; transform: scale(1); transition: none !important; }
+}
+
+.logo-wrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  background: radial-gradient(circle, rgba(0,200,133,0.45) 0%, rgba(0,200,133,0.12) 50%, transparent 72%);
+  border-radius: 50%;
+  animation: logoPulse 3s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes logoPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.18); }
+}
+
+.logo-img {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  filter: brightness(1.2) drop-shadow(0 0 7px rgba(255,255,255,0.55)) drop-shadow(0 0 3px rgba(0,200,133,0.4));
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), filter 0.35s ease;
+}
+
+.navbar-brand:hover .logo-img {
+  transform: scale(1.1);
+  filter: brightness(1.35) drop-shadow(0 0 12px rgba(255,255,255,0.7)) drop-shadow(0 0 8px rgba(0,200,133,0.65));
+}
+
+.navbar-brand:hover .logo-wrap::before {
+  animation: none;
+  opacity: 1;
+  transform: scale(1.35);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.logo-name {
+  font-size: 17px;
+  letter-spacing: 0.01em;
+  color: #f0f0f0;
+  transition: color 0.25s ease;
+}
+
+.logo-name-accent {
+  color: #00c885;
+}
+
+.navbar-brand:hover .logo-name {
+  color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-wrap::before { animation: none; opacity: 0.6; }
 }

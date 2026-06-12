@@ -360,3 +360,13 @@ function showToast(message) {
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 4000);
 }
+
+(function () {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+  function onScroll() {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
