@@ -146,6 +146,168 @@ function showToast(message, icon = 'bi-check-circle') {
   counters.forEach((el) => io.observe(el));
 })();
 
+(function initCarousel() {
+  const track = $('#projectTrack');
+  const originals = $$('.project-slide', track);
+  const count = originals.length;
+  const prev = $('#projectPrev');
+  const next = $('#projectNext');
+  const dotsWrap = $('#projectDots');
+  const current = $('#projectCurrent');
+  const pad = (n) => String(n).padStart(2, '0');
+  let copies = 0;
+  let pressed = false;
+  let idleTimer = 0;
+
+  $('#projectTotal').textContent = pad(count);
+
+  const dots = originals.map((slide, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.tabIndex = -1;
+    dot.addEventListener('click', () => {
+      const active = activeIndex();
+      let delta = i - active;
+      if (delta > count / 2) delta -= count;
+      if (delta < -count / 2) delta += count;
+      move(delta);
+    });
+    dotsWrap.append(dot);
+    return dot;
+  });
+
+  function clone() {
+    const node = originals.map((slide) => {
+      const copy = slide.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true');
+      $$('a, button', copy).forEach((el) => el.setAttribute('tabindex', '-1'));
+      copy.classList.add('is-clone');
+      return copy;
+    });
+    return node;
+  }
+
+  function build() {
+    $$('.is-clone', track).forEach((el) => el.remove());
+    if (count < 2) return;
+    const setWidth = metrics(originals).setWidth;
+    copies = Math.max(1, Math.ceil(track.clientWidth / setWidth) + 1);
+    for (let c = 0; c < copies; c++) {
+      track.prepend(...clone());
+      track.append(...clone());
+    }
+  }
+
+  function metrics() {
+    const all = $$('.project-slide', track);
+    const base = track.getBoundingClientRect().left - track.scrollLeft;
+    const left = (el) => el.getBoundingClientRect().left - base;
+    const first = left(all[0]);
+    const step = all.length > 1 ? left(all[1]) - first : track.clientWidth;
+    return { first, step, setWidth: step * count, start: first + copies * step * count };
+  }
+
+  function activeIndex() {
+    const { first, step } = metrics();
+    const idx = Math.round((track.scrollLeft - first) / step);
+    return (((idx - copies * count) % count) + count) % count;
+  }
+
+  function jump(left) {
+    track.style.scrollBehavior = 'auto';
+    track.style.scrollSnapType = 'none';
+    track.scrollLeft = left;
+    void track.offsetWidth;
+    track.style.scrollBehavior = '';
+    track.style.scrollSnapType = '';
+  }
+
+  function move(delta) {
+    const { first, step } = metrics();
+    const idx = Math.round((track.scrollLeft - first) / step);
+    track.scrollTo({ left: first + (idx + delta) * step, behavior: 'smooth' });
+  }
+
+  function recenter() {
+    if (count < 2 || pressed) return;
+    const { setWidth, start } = metrics();
+    let s = track.scrollLeft;
+    if (s >= start - 1 && s < start + setWidth - 1) return;
+    while (s < start - 1) s += setWidth;
+    while (s >= start + setWidth - 1) s -= setWidth;
+    jump(s);
+  }
+
+  function sync() {
+    const active = activeIndex();
+    current.textContent = pad(active + 1);
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+  }
+
+  prev.addEventListener('click', () => move(-1));
+  next.addEventListener('click', () => move(1));
+
+  track.addEventListener('scroll', () => {
+    requestAnimationFrame(sync);
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(recenter, 120);
+  }, { passive: true });
+
+  track.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); move(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1); }
+  });
+
+  let startX = 0;
+  let startLeft = 0;
+  let moved = false;
+
+  track.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    recenter();
+    pressed = true;
+    moved = false;
+    startX = e.clientX;
+    startLeft = track.scrollLeft;
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (!pressed) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) > 5) {
+      moved = true;
+      track.classList.add('dragging');
+    }
+    if (moved) track.scrollLeft = startLeft - dx;
+  });
+  window.addEventListener('pointerup', () => {
+    if (!pressed) return;
+    pressed = false;
+    if (!moved) return;
+    track.classList.remove('dragging');
+    const { first, step } = metrics();
+    track.scrollTo({ left: first + Math.round((track.scrollLeft - first) / step) * step, behavior: 'smooth' });
+  });
+
+  function layout() {
+    const idx = count > 1 ? activeIndex() : 0;
+    build();
+    if (count > 1) jump(metrics().first + (copies * count + idx) * metrics().step);
+    sync();
+  }
+
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layout, 150);
+  });
+
+  if (count < 2) {
+    $('#projectControls').classList.add('is-static');
+    dotsWrap.hidden = true;
+  }
+  layout();
+})();
+
 (function initCertificates() {
   const modalEl = $('#certModal');
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);

@@ -221,13 +221,20 @@
 
     <section id="projects" class="section section-alt">
       <div class="container">
-        <div class="reveal section-head">
-          <p class="eyebrow">Featured Projects</p>
-          <h2 class="section-heading">What I've built</h2>
+        <div class="reveal section-head head-split">
+          <div>
+            <p class="eyebrow">Featured Projects</p>
+            <h2 class="section-heading">What I've built</h2>
+          </div>
+          <div class="carousel-controls" id="projectControls">
+            <span class="carousel-count" aria-live="polite"><strong id="projectCurrent">01</strong> / <span id="projectTotal">03</span></span>
+            <button type="button" class="icon-btn" id="projectPrev" aria-label="Previous project"><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
+            <button type="button" class="icon-btn" id="projectNext" aria-label="Next project"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+          </div>
         </div>
 
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4 reveal">
+        <div class="carousel-track reveal" id="projectTrack" role="region" aria-roledescription="carousel" aria-label="Featured projects" tabindex="0">
+          <div class="project-slide">
             <article class="card card-soft project-card h-100">
               <div class="project-thumbnail ratio ratio-16x9">
                 <img src="assets/cruise.jpg" alt="Cruise Ticketing System screenshot" loading="lazy" />
@@ -240,7 +247,7 @@
               </div>
             </article>
           </div>
-          <div class="col-md-6 col-lg-4 reveal">
+          <div class="project-slide">
             <article class="card card-soft project-card h-100">
               <div class="project-thumbnail ratio ratio-16x9">
                 <img src="assets/survAIval.png" alt="survAIval screenshot" loading="lazy" />
@@ -253,7 +260,7 @@
               </div>
             </article>
           </div>
-          <div class="col-md-6 col-lg-4 reveal">
+          <div class="project-slide">
             <article class="card card-soft project-card h-100">
               <div class="project-thumbnail ratio ratio-16x9">
                 <img src="assets/portfolio.jpg" alt="Web portfolio screenshot" loading="lazy" />
@@ -267,6 +274,7 @@
             </article>
           </div>
         </div>
+        <div class="carousel-dots" id="projectDots" aria-hidden="true"></div>
       </div>
     </section>
 
