@@ -703,6 +703,13 @@ h1, h2, h3, h4, h5 {
   color: var(--text-2);
 }
 .project-body .btn { margin-top: auto; }
+.project-more {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
 
 .badge.tag {
   padding: 6px 12px;
