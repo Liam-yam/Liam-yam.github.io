@@ -328,10 +328,8 @@ function showToast(message, icon = 'bi-check-circle') {
     h.textContent = 'Preview not available yet';
 
     const p = document.createElement('p');
-    p.append('Add the certificate for ' + name + ' at ');
+    p.append('The certificate for ' + name);
     const code = document.createElement('code');
-    code.textContent = file;
-    p.append(code, ' and it will appear here.');
 
     wrap.append(tile, h, p);
     body.replaceChildren(wrap);
