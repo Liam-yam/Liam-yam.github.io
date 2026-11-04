@@ -1,3 +1,44 @@
+var projects = [
+  { title: 'Cruise Ticketing System', desc: 'Web application for managing cruise bookings and reservations.', image: 'Cruise-Booking.png', tags: ['PHP', 'SQL', 'JavaScript'], link: 'https://github.com/Liam-yam/Cruise-Booking' },
+  { title: 'survAIval', desc: 'A Barangay Smart Disaster Risk Monitoring Platform.', image: 'Smart-Disaster-Risk-Monitoring.png', tags: ['Python', 'SQL', 'Bootstrap'], link: 'https://github.com/Liam-yam/Smart-Disaster-Risk-Monitoring' },
+  { title: 'Web Portfolio', desc: 'Personal developer portfolio with responsive design.', image: 'Portfolio.png', tags: ['HTML', 'CSS', 'Bootstrap'], link: 'https://Liam-yam.github.io' },
+  { title: 'My Daily Overview', desc: 'Bento-style dashboard with a clock, music player and weather.', image: 'Bento.png', tags: ['HTML', 'Bootstrap'], link: 'https://liam-yam.github.io/School_Projects/Web_Dev/ATY_01/', live: true },
+  { title: 'Lotus Shoe Store', desc: 'Shoe store page built from arrays of objects and for loops.', image: 'Lotus.png', tags: ['HTML', 'Bootstrap', 'JavaScript'], link: 'https://liam-yam.github.io/School_Projects/Web_Dev/ATY_02/', live: true },
+  { title: 'Valogall', desc: 'Valorant gallery of agents, maps, guns, skins, sprays and tiers, powered by a public API.', image: 'Valogall.png', tags: ['HTML', 'Bootstrap', 'JavaScript', 'API'], link: 'https://liam-yam.github.io/School_Projects/Web_Dev/MT_01/', live: true }
+];
+
+var html = '';
+for (var i = 0; i < projects.length; i++) {
+  var project = projects[i];
+
+  var tags = '';
+  for (var t = 0; t < project.tags.length; t++) {
+    tags += `<span class="badge rounded-pill tag">`+project.tags[t]+`</span>`;
+  }
+
+  var button = `<i class="bi bi-github" aria-hidden="true"></i> View on GitHub`;
+  if (project.live) {
+    button = `<i class="bi bi-box-arrow-up-right" aria-hidden="true"></i> View Live`;
+  }
+
+  html += `
+    <div class="project-slide">
+      <article class="card card-soft project-card h-100">
+        <div class="project-thumbnail ratio ratio-16x9">
+          <img src="assets/`+project.image+`" alt="`+project.title+` screenshot" loading="lazy" />
+        </div>
+        <div class="card-body project-body">
+          <h3>`+project.title+`</h3>
+          <p>`+project.desc+`</p>
+          <div class="d-flex flex-wrap gap-2 mb-3">`+tags+`</div>
+          <a href="`+project.link+`" target="_blank" rel="noopener" class="btn btn-ghost w-100">`+button+`</a>
+        </div>
+      </article>
+    </div>
+  `;
+}
+document.getElementById('projectTrack').innerHTML = html;
+
 const EMAIL = 'pliampalomo@gmail.com';
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
